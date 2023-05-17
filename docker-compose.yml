@@ -1,0 +1,28 @@
+version: "3.8"
+
+networks:
+  web-net:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:14-alpine3.17
+    container_name: db
+    env_file:
+      - .env
+    networks:
+      - web-net
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - '80:80'
+    networks:
+      - web-net
