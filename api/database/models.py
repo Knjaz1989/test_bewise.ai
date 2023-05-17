@@ -11,4 +11,4 @@ class Question(Base):
     id = sa.Column(sa.Integer, primary_key=True, unique=True)
     question = sa.Column(sa.TEXT)
     answer = sa.Column(sa.TEXT)
-    create_date = sa.Column(sa.DateTime)
+    created_date = sa.Column(sa.TEXT)
