@@ -1,28 +1,31 @@
 version: "3.8"
 
 networks:
-  web-net:
+  task_1_web-net:
     driver: bridge
 
 services:
   db:
     image: postgres:14-alpine3.17
-    container_name: db
+    container_name: task_1_db
     env_file:
       - .env
+    volumes:
+      - "./PGDATA:/var/lib/postgresql/data/"
     networks:
-      - web-net
+      - task_1_web-net
+    restart: always
 
   api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api
+    container_name: task_1_api
     env_file:
       - .env
     depends_on:
       - db
     ports:
-      - '80:80'
+      - '80:8000'
     networks:
-      - web-net
+      - task_1_web-net

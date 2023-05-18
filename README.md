@@ -1,8 +1,10 @@
-# test_bewise.ai
+# Bewise.ai test works
 
-## To run project with docker compose ver. 2
+## Clone repo
 ```bash
-git clone git@github.com:Knjaz1989/test_bewise.ai.git test_bewise.ai
+mkdir test_bewise.ai
 cd test_bewise.ai
-docker compose up -d
+git clone git@github.com:Knjaz1989/test_bewise.ai.git .
 ```
+## [Task 1](task_1)
+## [Task 2](task_2)
