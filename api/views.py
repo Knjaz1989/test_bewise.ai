@@ -11,6 +11,8 @@ async def get_questions(questions_num: int, session=Depends(get_session)):
         questions = requests.get(
             'https://jservice.io/api/random', params={'count': questions_num}
         ).json()
+        from pprint import pprint
+        pprint(questions)
         for num, question in enumerate(questions):
             data = {
                 'id': question['id'],

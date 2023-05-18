@@ -8,5 +8,4 @@ api_router = APIRouter()
 
 api_router.add_api_route(
     path="/", endpoint=get_questions, methods=["POST"],
-    # response_model=PostAddGetResponse
 )
