@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from sqlalchemy import select, and_
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,3 +17,12 @@ async def add_user(session: AsyncSession, name: str):
     await session.commit()
     insert_data = insert_data.mappings().one()
     return insert_data
+
+
+async def get_user(session: AsyncSession, uuid: str, user_id: int):
+    select_stm = select(User).where(
+        and_(User.uuid == uuid, User.id == user_id)
+    )
+    query = await session.execute(select_stm)
+    user = query.scalars().first()
+    return user

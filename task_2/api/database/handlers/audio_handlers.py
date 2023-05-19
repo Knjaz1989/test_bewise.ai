@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from pydantic.types import UUID
 from sqlalchemy import select, insert, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,7 +14,7 @@ async def add_audio(
         user_id: int
 ):
     insert_stm = insert(Audio).values(
-        uuid=uuid4(), name=name, data=data, user_id=user_id
+        id=uuid4(), name=name, data=data, user_id=user_id
     ).returning(Audio.id)
     query = await session.execute(insert_stm)
     audio_id = query.mappings().one()
@@ -21,7 +22,7 @@ async def add_audio(
     return audio_id
 
 
-async def select_audio(session: AsyncSession, user_id: int, audio_id: int):
+async def select_audio(session: AsyncSession, user_id: int, audio_id: UUID):
     select_stm = select(Audio).where(
         and_(user_id == Audio.user_id, audio_id == Audio.id)
     )
