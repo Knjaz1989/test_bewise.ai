@@ -1,6 +1,6 @@
 from fastapi import Depends, Form
 
-from database.base_handlers import add_user
+from database.handlers.user_handlers import add_user
 from database.db_sync import get_session
 
 

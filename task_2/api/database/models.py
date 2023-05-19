@@ -13,3 +13,9 @@ class User(Base):
     id: int = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     name: str = sa.Column(sa.TEXT)
     uuid: uuid4 = sa.Column(sa.UUID, unique=True)
+
+
+class Audio(Base):
+    __tablename__ = 'audios'
+
+    
