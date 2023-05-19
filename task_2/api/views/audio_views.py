@@ -1,3 +1,4 @@
+import os
 from uuid import UUID
 from tempfile import NamedTemporaryFile
 
@@ -20,7 +21,9 @@ async def create_audio(
     tempfile=Depends(create_temp_file),
     session=Depends(get_session)
 ):
-    if uploadfile.content_type not in ['audio/wave', 'audio/wav', 'audio/x-wav']:
+    old_name = uploadfile.filename
+    dote_index = old_name.rfind('.')
+    if old_name[dote_index:] != '.wav':
         raise HTTPException(422, detail="Invalid file type. Only .wav")
     if not is_valid_uuid(uuid):
         raise HTTPException(400, detail='uuid is invalid')
@@ -28,12 +31,13 @@ async def create_audio(
         raise HTTPException(403, detail="Wrong credentials")
     AudioSegment.from_file_using_temporary_files(uploadfile.file).export(
         tempfile, format='mp3')
-    old_name = uploadfile.filename
-    new_name = old_name[0: old_name.rfind('.')] + '.mp3'
-    audio_id = await add_audio(
+    new_name = old_name[0: dote_index] + '.mp3'
+    audio = await add_audio(
         session, new_name, tempfile.file.read(), user_id
     )
-    return f"http://localhost:8000/record/?id={audio_id['id']}&user_id={user_id}"
+    host = os.getenv('api_host')
+    port = os.getenv('external_port')
+    return f"http://{host}:{port}/record/?id={audio['id']}&user_id={user_id}"
 
 
 async def get_audio(
