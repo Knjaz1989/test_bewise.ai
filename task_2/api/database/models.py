@@ -18,4 +18,10 @@ class User(Base):
 class Audio(Base):
     __tablename__ = 'audios'
 
-    
+    id: int = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    name: str = sa.Column(sa.TEXT)
+    uuid: uuid4 = sa.Column(sa.UUID, unique=True)
+    data: bytes = sa.Column(sa.LargeBinary)
+    user_id = sa.Column(
+        sa.Integer, sa.ForeignKey('users.id', ondelete='CASCADE')
+    )
